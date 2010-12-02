@@ -1,22 +1,33 @@
-#!/usr/local/bin/python
+#!/usr/bin/python
 
-print("i forgot python")
+import os
+
+def fabcheck():
+
+    fab_printers = [ "fab5517bw1",
+                     "fab5517bw2",
+                     "fab6001bw1",
+                     "fab6019bw1",
+                     "fab8201bw1", # ^ lpr printers
+                     "fab160bw2",
+                     "fab160bw1",
+                     "fab5517clr1",
+                     "fab8202bw1",
+                   ]
+    # lpq check - all FAB printers
+    for printer in fab_printers:
+        print("lpq -P " + printer)
+        #os.system("lpq -P " + printer)
+
+    # lpr
+    for printer in fab_printers[:5]:
+        print("lpr pacman -P " + printer)
+        #os.system("lpr pacman -P " + printer)
 
 
-# fab check
-#lpq
-#fab160bw2
-#fab160bw1
-#fab5517clr1
-#fab8202bw1
+def main():
 
-#lpr
-#>fab5517bw1- FAB 55-17 Intel Lab (west)
-#>fab5517bw2- FAB 55-17 Intel Lab (east)
-#>fab6001bw1- Circuits Lab
-#>fab6019bw1- VLSI Lab
-#>fab8201bw1- FAB Frontdesk (DOGHaus)
-
+    fabcheck()
 
 # eb check
 
@@ -29,4 +40,5 @@ print("i forgot python")
 #> eb325bw2
 #> eb423bw1
 
-
+if __name__=="__main__":
+    main()

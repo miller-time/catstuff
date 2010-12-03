@@ -8,7 +8,7 @@ def fabcheck():
                      "fab5517bw2",
                      "fab6001bw1",
                      "fab6019bw1",
-                     "fab8201bw1", # ^ lpr printers
+                     "fab8201bw1",  # ^ lpr printers
                      "fab160bw2",
                      "fab160bw1",
                      "fab5517clr1",
@@ -24,21 +24,29 @@ def fabcheck():
         print("lpr pacman -P " + printer)
         #os.system("lpr pacman -P " + printer)
 
+def ebcheck():
+
+    eb_printers = [ "eb325bw1",
+                    "eb325bw2",
+                    "eb423bw1",     # ^ lpr printers
+                    "eb325clr1",
+                    "eb423clr1",
+                  ]
+
+    # lpq check
+    for printer in eb_printers:
+        print("lpq -P " + printer)
+        #os.system("lpq -P " + printer)
+
+    # lpr
+    for printer in eb_printers[:3]:
+        print("lpr pacman -P " + printer)
+        #os.system("lpr pacman -P " + printer)
 
 def main():
 
     fabcheck()
-
-# eb check
-
-# lpq
-# eb325clr1
-# eb423clr1
-
-# lpr
-#> eb325bw1
-#> eb325bw2
-#> eb423bw1
+    ebcheck()
 
 if __name__=="__main__":
     main()

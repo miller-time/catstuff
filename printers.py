@@ -43,8 +43,14 @@ def ebcheck():
         print("lpr pacman -P " + printer)
         #os.system("lpr pacman -P " + printer)
 
-def main():
+def fab_or_eb():
+    
+    return result
 
+def main():
+    
+    if len(sys.argv) == 1:
+        fab_or_eb()
     fabcheck()
     ebcheck()
 

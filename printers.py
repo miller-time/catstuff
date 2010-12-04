@@ -56,7 +56,15 @@ def do_lpr(printer):
         lpq_out = lpq.stdout.read()
         match = re.search(r'ready',lpq_out)
         if match:
-            generate_image(printer)
+            # check if printer is duplex
+            sides = 1
+            opts_cmd = "lpoptions -p " + printer
+            opts = Popen(opts_cmd, shell=True, stdout=PIPE)
+            opts_out = opts.stdout.read()
+            match = re.search(r'sides=two-sided',opts_out)
+            if match:
+                sides = 2
+            generate_image(printer, sides)
             os.system("lpr pacman.tmp -P " + printer)
             #print("lpr pacman.tmp -P " + printer)   #debug print
             delete_image()
@@ -71,16 +79,22 @@ def getarg():
     if len(sys.argv) > 1:
         return sys.argv[1].lower()
 
-def generate_image(printer):
+def generate_image(printer, sides):
     f = open('pacman.tmp', 'w')
     f.write("Russell Miller thatguy@cat.pdx.edu " +
             time.ctime() + " " + printer + "\n")
     f.close()
     os.system("cat pacman >> pacman.tmp")
+    if sides == 2:
+        os.system("cat death >> pacman.tmp")
 
 def delete_image():
     if os.path.exists("pacman.tmp"):
         os.system("rm pacman.tmp")
+
+def test():
+    printer = "fabc8802bw1"
+    do_lpr(printer)
 
 def main():
    
@@ -92,6 +106,8 @@ def main():
         fabcheck()
     elif which == "eb":
         ebcheck()
+    elif which == "test":
+        test()
     else:
         sys.exit(0)
     print("done.")

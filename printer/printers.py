@@ -3,18 +3,30 @@
 import os, sys, time, re
 from subprocess import Popen, PIPE
 
+def get_fab_printers():
+    return [ "fab5517bw1",
+             "fab5517bw2",
+             "fab6001bw1",
+             "fab6019bw1",
+             "fab8201bw1",  # ^ lpr printers
+             "fab160bw2",
+             "fab160bw1",
+             "fab5517clr1",
+             "fab8202bw1",
+           ]
+
+def get_eb_printers(): 
+    return [ "eb325bw1",
+             "eb325bw2",
+             "eb423bw1",     # ^ lpr printers
+             "eb325clr1",
+             "eb423clr1",
+           ]
+
 def fabcheck():
 
-    fab_printers = [ "fab5517bw1",
-                     "fab5517bw2",
-                     "fab6001bw1",
-                     "fab6019bw1",
-                     "fab8201bw1",  # ^ lpr printers
-                     "fab160bw2",
-                     "fab160bw1",
-                     "fab5517clr1",
-                     "fab8202bw1",
-                   ]
+    fab_printers = get_fab_printers()
+
     # lpq the non-lpr printers
     for printer in fab_printers[5:]:
         do_lpq(printer)
@@ -25,12 +37,7 @@ def fabcheck():
 
 def ebcheck():
 
-    eb_printers = [ "eb325bw1",
-                    "eb325bw2",
-                    "eb423bw1",     # ^ lpr printers
-                    "eb325clr1",
-                    "eb423clr1",
-                  ]
+    eb_printers = get_eb_printers()
 
     # lpq the non-lpr printers
     for printer in eb_printers[3:]:
@@ -103,6 +110,13 @@ def test():
     printer = "fabc8802bw1"
     do_lpr(printer, True)
 
+def just_lpqs():
+
+    fab_printers = get_fab_printers()
+    eb_printers = get_eb_printers()
+    for printer in fab_printers+eb_printers:
+        do_lpq(printer)
+
 def main():
    
     if len(sys.argv) == 1:
@@ -113,6 +127,8 @@ def main():
         fabcheck()
     elif which == "eb":
         ebcheck()
+    elif which == "lpq":
+        just_lpqs()
     elif which == "test":
         test()
     else:

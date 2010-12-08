@@ -21,7 +21,7 @@ def fabcheck():
 
     # lpr printers that are "ready"
     for printer in fab_printers[:5]:
-        do_lpr(printer)
+        do_lpr(printer, False)
 
 def ebcheck():
 
@@ -38,7 +38,7 @@ def ebcheck():
 
     # lpr printers that are "ready"
     for printer in eb_printers[:3]:
-        do_lpr(printer)
+        do_lpr(printer, False)
 
 def do_lpq(printer):
         lpq_cmd = "lpq -P " + printer
@@ -50,23 +50,30 @@ def do_lpq(printer):
             print(lpq_out)
         #print("lpq_cmd)     # debug print
 
-def do_lpr(printer):
+def do_lpr(printer, debug):
         lpq_cmd = "lpq -P " + printer
         lpq = Popen(lpq_cmd, shell=True, stdout=PIPE)
+        if debug:
+            print(lpq_cmd)
         lpq_out = lpq.stdout.read()
+        if debug:
+            print(lpq_out)
         match = re.search(r'ready',lpq_out)
         if match:
             # check if printer is duplex
             sides = 1
             opts_cmd = "lpoptions -p " + printer
             opts = Popen(opts_cmd, shell=True, stdout=PIPE)
+            if debug:
+                print(opts_cmd)
             opts_out = opts.stdout.read()
             match = re.search(r'sides=two-sided',opts_out)
             if match:
                 sides = 2
             generate_image(printer, sides)
             os.system("lpr pacman.tmp -P " + printer)
-            #print("lpr pacman.tmp -P " + printer)   #debug print
+            if debug:
+                print("lpr pacman.tmp -P " + printer)   #debug print
             delete_image()
         else:
             print(lpq_out)
@@ -94,7 +101,7 @@ def delete_image():
 
 def test():
     printer = "fabc8802bw1"
-    do_lpr(printer)
+    do_lpr(printer, True)
 
 def main():
    

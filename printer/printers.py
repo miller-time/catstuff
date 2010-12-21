@@ -68,6 +68,7 @@ def do_lpr(printer, debug):
         match = re.search(r'ready',lpq_out)
         if match:
             # check if printer is duplex
+            # if lpoptions fails, use -o to set sides correctly
             sides = 1
             opts_cmd = "lpoptions -p " + printer
             opts = Popen(opts_cmd, shell=True, stdout=PIPE)
@@ -107,7 +108,8 @@ def delete_image():
         os.system("rm pacman.tmp")
 
 def test():
-    printer = "fabc8802bw1"
+    #printer = "fabc8802bw1"
+    printer = raw_input("Printer? ")
     do_lpr(printer, True)
 
 def just_lpqs():
